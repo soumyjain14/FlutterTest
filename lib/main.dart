@@ -1,15 +1,19 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audio_cache.dart';
+
 
 void main() {
   runApp(MyApp());
 }
 
 var url = 'https://i.ytimg.com/vi/Pm0Ga7R-vrM/hqdefault.jpg';
-plays() async {
-  final player = AudioCache();
-  await player.play('B.mp3');
+
+play() async {
+  print('hi');
+  var player = AudioPlayer();
+  await player.play('Tujhe.mp3');
+  //player.loop('Tujhe.mp3');
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
                 child: Card(
                   child: RaisedButton(
                     child: Text('play'),
-                    onPressed: plays,
+                    onPressed: play,
                   ),
                   color: Colors.green,
                   elevation: 5,
