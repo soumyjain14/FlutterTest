@@ -79,18 +79,24 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 onSwipeLeft: () {
-                  assetsAudioPlayer.pause();
+                  if ( _swipeDirection == "") {
+                    assetsAudioPlayer.pause();
                   assetsAudioPlayer.open(
                         Audio('assets/B.mp3'));
+                  }
+                  
 
                   setState(() {
                     _swipeDirection = "Swipe Left";
                   });
                 },
                 onSwipeRight: () {
-                  assetsAudioPlayer.pause();
+                  if (_swipeDirection == "Swipe Left") {
+                    assetsAudioPlayer.pause();
                   assetsAudioPlayer.open(
                         Audio('audio/Tujhe.mp3'));
+                  }
+                  
                   setState(() {
                     _swipeDirection = "";
                   });
