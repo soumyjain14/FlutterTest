@@ -1,22 +1,30 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
-
+import 'package:audioplayers/audioplayers.dart';
+import 'package:swipedetector/swipedetector.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 var url = 'https://i.ytimg.com/vi/Pm0Ga7R-vrM/hqdefault.jpg';
-
-play() async {
-  print('hi');
-  var player = AudioPlayer();
+plays() async {
+  final player = AudioCache();
   await player.play('Tujhe.mp3');
-  //player.loop('Tujhe.mp3');
 }
 
-class MyApp extends StatelessWidget {
+
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  AudioPlayer _audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+
+  String _swipeDirection = "";
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -26,26 +34,108 @@ class MyApp extends StatelessWidget {
           title: Text('My Music App'),
           backgroundColor: Colors.blue,
         ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Center(
+                  child: Text(
+                    'Soumy\'s Music App',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  'This is just a basic App which plays 2 songs for you, the App comes with play/pause feature and has the swipe facility to shift between the two songs',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+        ),
         body: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              SwipeDetector(
+                child: Container(
+                  width: 400,
+                  height: 400,
+                  child: Card(
+                    child: Image.asset(
+                        '${_swipeDirection == '' ? 'images/kabir.jpg' : 'images/pika.jpg'}'),
+                    color: Colors.grey.shade300,
+                    elevation: 5,
+                  ),
+                ),
+                onSwipeLeft: () {
+                  setState(() {
+                    _swipeDirection = "Swipe Left";
+                  });
+                },
+                onSwipeRight: () {
+                  setState(() {
+                    _swipeDirection = "";
+                  });
+                },
+              ),
               Container(
-                width: 400,
-                height: 400,
+                width: 200,
+                height: 50,
                 child: Card(
-                  child: Image.asset('images/kabir.jpg'),
-                  color: Colors.grey.shade300,
+                  child: RaisedButton(
+                      child: Text('Play the song'),
+                      onPressed:plays, 
+                      ),
+                  color: Colors.green,
                   elevation: 5,
                 ),
               ),
               Container(
-                width: 100,
+                width: 200,
                 height: 50,
                 child: Card(
                   child: RaisedButton(
-                    child: Text('play'),
-                    onPressed: play,
+                    child: Text('Pause/Resume the song'),
+                    onPressed: () {
+                      if (isPlaying) {
+                        _audioPlayer.pause();
+                        setState(() {
+                          isPlaying = false;
+                        });
+                      } else {
+                        _audioPlayer.resume();
+                        setState(() {
+                          isPlaying = true;
+                        });
+                      }
+                    },
+                  ),
+                  color: Colors.green,
+                  elevation: 5,
+                ),
+              ),
+              Container(
+                width: 200,
+                height: 50,
+                child: Card(
+                  child: RaisedButton(
+                    child: Text('Stop the song'),
+                    onPressed: () {
+                      _audioPlayer.stop();
+                      setState(() {
+                        isPlaying = false;
+                      });
+                    },
                   ),
                   color: Colors.green,
                   elevation: 5,
