@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:swipedetector/swipedetector.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +15,27 @@ plays() async {
   await player.play('Tujhe.mp3');
 }
 
+void onPressPhone() {
+  Fluttertoast.showToast(
+      msg: "8837546607",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
+
+void onPressEmail() {
+  Fluttertoast.showToast(
+      msg: "soumyjain14@gmail.com",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -32,8 +54,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('My Music App'),
-          backgroundColor: Colors.blue,
+          title: Text('Soumy\'s Music App'),
+          backgroundColor: Colors.orange.shade700,
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.phone), onPressed: onPressPhone),
+            IconButton(icon: Icon(Icons.email), onPressed: onPressEmail),
+          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -41,7 +67,10 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  gradient: LinearGradient(colors: <Color>[
+                    Colors.red,
+                    Colors.orange,
+                  ]),
                 ),
                 child: Center(
                   child: Text(
@@ -55,9 +84,26 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               ListTile(
+                contentPadding: EdgeInsets.all(20),
                 title: Text(
-                  'This is just a basic App which plays 2 songs for you, the App comes with play/pause feature and has the swipe facility to shift between the two songs',
-                  style: TextStyle(fontSize: 20),
+                  '---This is just a basic App which plays 2 songs for you ',
+                  style: TextStyle(
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(20),
+                title: Text(
+                  '---The App comes with play/pause feature',
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(20),
+                title: Text(
+                  '---Left swipe facility to shift between the two songs',
+                  style: TextStyle(fontSize: 25),
                 ),
               ),
             ],
@@ -73,30 +119,22 @@ class _MyAppState extends State<MyApp> {
                   height: 400,
                   child: Card(
                     child: Image.asset(
-                        '${_swipeDirection == '' ? 'images/kabir.jpg' : 'images/pika.jpg'}'),
+                        '${_swipeDirection == '' ? 'images/kabir.jpg' : 'images/Bh.jpg'}'),
                     color: Colors.grey.shade300,
                     elevation: 5,
                   ),
                 ),
                 onSwipeLeft: () {
-                  if ( _swipeDirection == "") {
-                    assetsAudioPlayer.pause();
-                  assetsAudioPlayer.open(
-                        Audio('assets/B.mp3'));
-                  }
-                  
+                  assetsAudioPlayer.pause();
+                  assetsAudioPlayer.open(Audio('assets/D.mp3'));
 
                   setState(() {
                     _swipeDirection = "Swipe Left";
                   });
                 },
                 onSwipeRight: () {
-                  if (_swipeDirection == "Swipe Left") {
-                    assetsAudioPlayer.pause();
-                  assetsAudioPlayer.open(
-                        Audio('audio/Tujhe.mp3'));
-                  }
-                  
+                  assetsAudioPlayer.pause();
+                  assetsAudioPlayer.open(Audio('audio/Tujhe.mp3'));
                   setState(() {
                     _swipeDirection = "";
                   });
@@ -107,10 +145,12 @@ class _MyAppState extends State<MyApp> {
                 height: 50,
                 child: Card(
                   child: RaisedButton(
+                    color: Colors.orange.shade500,
                     child: Text('Play the song'),
                     onPressed: () {
                       assetsAudioPlayer.open(
-                        Audio('${_swipeDirection == '' ? 'audio/Tujhe.mp3' : 'assets/B.mp3'}'),
+                        Audio(
+                            '${_swipeDirection == '' ? 'audio/Tujhe.mp3' : 'assets/B.mp3'}'),
                       );
                     },
                   ),
@@ -123,6 +163,7 @@ class _MyAppState extends State<MyApp> {
                 height: 50,
                 child: Card(
                   child: RaisedButton(
+                    color: Colors.orange.shade500,
                     child: Text('Pause/Resume the song'),
                     onPressed: () {
                       if (isPlaying) {
@@ -147,6 +188,7 @@ class _MyAppState extends State<MyApp> {
                 height: 50,
                 child: Card(
                   child: RaisedButton(
+                    color: Colors.orange.shade500,
                     child: Text('Stop the song'),
                     onPressed: () {
                       _audioPlayer.stop();
@@ -166,5 +208,4 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
     );
   }
-
 }
