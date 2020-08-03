@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -14,7 +15,6 @@ plays() async {
 }
 
 
-
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -23,6 +23,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   AudioPlayer _audioPlayer = AudioPlayer();
   bool isPlaying = false;
+  final assetsAudioPlayer = AssetsAudioPlayer();
 
   String _swipeDirection = "";
   // This widget is the root of your application.
@@ -78,11 +79,18 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 onSwipeLeft: () {
+                  assetsAudioPlayer.pause();
+                  assetsAudioPlayer.open(
+                        Audio('assets/B.mp3'));
+
                   setState(() {
                     _swipeDirection = "Swipe Left";
                   });
                 },
                 onSwipeRight: () {
+                  assetsAudioPlayer.pause();
+                  assetsAudioPlayer.open(
+                        Audio('audio/Tujhe.mp3'));
                   setState(() {
                     _swipeDirection = "";
                   });
@@ -93,9 +101,13 @@ class _MyAppState extends State<MyApp> {
                 height: 50,
                 child: Card(
                   child: RaisedButton(
-                      child: Text('Play the song'),
-                      onPressed:plays, 
-                      ),
+                    child: Text('Play the song'),
+                    onPressed: () {
+                      assetsAudioPlayer.open(
+                        Audio('${_swipeDirection == '' ? 'audio/Tujhe.mp3' : 'assets/B.mp3'}'),
+                      );
+                    },
+                  ),
                   color: Colors.green,
                   elevation: 5,
                 ),
@@ -108,12 +120,12 @@ class _MyAppState extends State<MyApp> {
                     child: Text('Pause/Resume the song'),
                     onPressed: () {
                       if (isPlaying) {
-                        _audioPlayer.pause();
+                        assetsAudioPlayer.playOrPause();
                         setState(() {
                           isPlaying = false;
                         });
                       } else {
-                        _audioPlayer.resume();
+                        assetsAudioPlayer.pause();
                         setState(() {
                           isPlaying = true;
                         });
@@ -148,4 +160,5 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
     );
   }
+
 }
